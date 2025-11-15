@@ -10,6 +10,7 @@ const OPENAI_API_KEY = process.env.EXPO_PUBLIC_OPENAI_API_KEY || '';
 
 const openai = new OpenAI({
   apiKey: OPENAI_API_KEY,
+  dangerouslyAllowBrowser: true,
 });
 
 export class OpenAIService {
