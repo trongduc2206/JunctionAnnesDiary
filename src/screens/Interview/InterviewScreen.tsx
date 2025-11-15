@@ -171,7 +171,7 @@ const InterviewScreen: React.FC<Props> = ({ navigation, route }) => {
         const storyId = 'temp-' + Date.now();
         await storageService.saveStory({
           id: storyId,
-          photo: null,
+          photo: photo ?? null,
           title: storyResult.title,
           narrative: storyResult.narrative,
           createdAt: new Date().toISOString(),
