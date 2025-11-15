@@ -17,6 +17,7 @@ import { Button, VoiceIndicator } from '../../components/common';
 import { SAMPLE_PHOTOS, INTERVIEW_QUESTIONS } from '../../constants/data';
 import { elevenLabsService } from '../../services/elevenLabsService';
 import { openaiService } from '../../services/openaiService';
+import { storageService } from '../../services/storageService';
 
 type InterviewScreenNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
@@ -167,12 +168,22 @@ const InterviewScreen: React.FC<Props> = ({ navigation, route }) => {
         );
 
         // In a real app, you would save the story to storage here
-        console.log('Generated Story:', storyResult);
+        const storyId = 'temp-' + Date.now();
+        await storageService.saveStory({
+          id: storyId,
+          photo: null,
+          title: storyResult.title,
+          narrative: storyResult.narrative,
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+          metadata: {},
+        });
 
         // Navigate to story preview with generated story ID
-        navigation.navigate('StoryPreview', { storyId: 'temp-' + Date.now() });
+        navigation.navigate('StoryPreview', { storyId: storyId });
       } else {
         // No transcripts available, navigate anyway with mock data
+        console.log('No transcripts available, navigating with mock story.');
         navigation.navigate('StoryPreview', { storyId: 'temp-' + Date.now() });
       }
     } catch (error) {

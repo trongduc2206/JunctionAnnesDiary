@@ -16,6 +16,7 @@ import { COLORS, FONTS, SPACING, SIZES, SHADOWS } from '../../constants/theme';
 import { Button } from '../../components/common';
 import { SAMPLE_PHOTOS } from '../../constants/data';
 import { elevenLabsService } from '../../services/elevenLabsService';
+import { storageService } from '../../services/storageService';
 
 type StoryPreviewScreenNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
@@ -53,15 +54,26 @@ Those were some of the happiest years of my life. Every loaf of bread, every cak
     audioUrl: 'mock-audio-url',
   };
 
-  // Initialize audio service on mount
+  const [story, setStory] = useState<any>(null);
+
+  // Initialize audio service and load story on mount
   useEffect(() => {
+    console.log('storyId:', storyId);
     elevenLabsService.initialize();
+
+    // Load story
+    const loadStory = async () => {
+      const loadedStory = await storageService.getStory(storyId);
+      console.log('Loaded story:', loadedStory);
+      setStory(loadedStory);
+    };
+    loadStory();
 
     // Cleanup on unmount
     return () => {
       elevenLabsService.stopSpeaking();
     };
-  }, []);
+  }, [storyId]);
 
   const handleSave = () => {
     // Stop audio before navigating
@@ -83,7 +95,7 @@ Those were some of the happiest years of my life. Every loaf of bread, every cak
       } else {
         // Play the story narrative using ElevenLabs
         setIsLoading(true);
-        await elevenLabsService.speak(mockStory.narrative);
+        await elevenLabsService.speak(story?.narrative || mockStory.narrative);
         setIsPlaying(true);
       }
     } catch (error) {
@@ -114,19 +126,19 @@ Those were some of the happiest years of my life. Every loaf of bread, every cak
         {/* Photo */}
         <View style={styles.photoContainer}>
           <Image
-            source={{ uri: mockStory.photo.url }}
+            source={{ uri: story?.photo?.url || mockStory.photo.url }}
             style={styles.photo}
             resizeMode="cover"
           />
         </View>
 
         {/* Title */}
-        <Text style={styles.title}>{mockStory.title}</Text>
+        <Text style={styles.title}>{story?.title || mockStory.title}</Text>
 
         {/* Date */}
         <Text style={styles.date}>
           Created on{' '}
-          {new Date(mockStory.createdAt).toLocaleDateString('en-US', {
+          {new Date(story?.createdAt || mockStory.createdAt).toLocaleDateString('en-US', {
             month: 'long',
             day: 'numeric',
             year: 'numeric',
@@ -158,7 +170,7 @@ Those were some of the happiest years of my life. Every loaf of bread, every cak
         {/* Narrative */}
         <View style={styles.narrativeContainer}>
           <Text style={styles.narrativeTitle}>Your Story</Text>
-          <Text style={styles.narrative}>{mockStory.narrative}</Text>
+          <Text style={styles.narrative}>{story?.narrative || mockStory.narrative}</Text>
         </View>
 
         {/* Actions */}

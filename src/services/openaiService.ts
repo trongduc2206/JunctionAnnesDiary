@@ -21,18 +21,12 @@ export class OpenAIService {
    */
   async speechToText(audioUri: string): Promise<string> {
     try {
-      // Read the audio file from the device
-      const audioBase64 = await FileSystem.readAsStringAsync(audioUri, {
-        encoding: FileSystem.EncodingType.Base64,
-      });
+      // Convert the local file URI to a Blob
+      const response = await fetch(audioUri);
+      const audioBlob = await response.blob();
 
-      // Convert base64 to blob for upload
-      const audioBlob = this.base64ToBlob(audioBase64, 'audio/m4a');
-
-      // Create a File object for the API
-      const audioFile = new File([audioBlob], 'recording.m4a', {
-        type: 'audio/m4a',
-      });
+      // Create File object
+      const audioFile = new File([audioBlob], 'recording.m4a', { type: 'audio/m4a' });
 
       // Transcribe using Whisper
       const transcription = await openai.audio.transcriptions.create({

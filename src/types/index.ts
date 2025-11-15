@@ -24,7 +24,7 @@ export type PhotoCategory =
 export interface LegacyStory {
   id: string;
   title: string;
-  photo: Photo;
+  photo: Photo | null;
   narrative: string;
   audioUrl?: string;
   createdAt: string;
