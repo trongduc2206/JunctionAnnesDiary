@@ -177,6 +177,7 @@ const InterviewScreen: React.FC<Props> = ({ navigation, route }) => {
           createdAt: new Date().toISOString(),
           updatedAt: new Date().toISOString(),
           metadata: {},
+          audioUrl: "mock-audio-url-N",
         });
 
         // Navigate to story preview with generated story ID
