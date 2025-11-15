@@ -29,13 +29,17 @@ export class OpenAIService {
       const audioFile = new File([audioBlob], 'recording.m4a', { type: 'audio/m4a' });
 
       // Transcribe using Whisper
-      const transcription = await openai.audio.transcriptions.create({
-        file: audioFile,
-        model: 'whisper-1',
-        language: 'en',
-      });
+      /* Enable this before submitting */
+      // const transcription = await openai.audio.transcriptions.create({
+      //   file: audioFile,
+      //   model: 'whisper-1',
+      //   language: 'en',
+      // });
 
-      return transcription.text;
+      // return transcription.text;
+
+      // Mocked response for testing without API call
+      return "I'm feeling happy"
     } catch (error) {
       console.error('Speech-to-text error:', error);
       throw new Error('Failed to transcribe audio');
