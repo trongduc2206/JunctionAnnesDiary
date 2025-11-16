@@ -4,6 +4,8 @@ import { View, Text, StyleSheet, ActivityIndicator } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { AppNavigator } from './src/navigation/AppNavigator';
 import { elevenLabsService } from './src/services/elevenLabsService';
+import { storageService } from './src/services/storageService';
+import { DEFAULT_STORIES } from './src/constants/defaultStories';
 import { COLORS } from './src/constants/theme';
 
 export default function App() {
@@ -18,6 +20,9 @@ export default function App() {
     try {
       // Initialize audio/voice services
       await elevenLabsService.initialize();
+
+      // Initialize default stories in storage
+      await storageService.initializeDefaultStories(DEFAULT_STORIES);
 
       // Add any other initialization here
       // e.g., load user preferences, check for updates, etc.
