@@ -85,7 +85,7 @@ const DiaryScreen: React.FC = () => {
 
   const handlePlayStory = (storyId: string) => {
     console.log('Play story audio:', storyId);
-    // Play audio narration
+    navigation.navigate('StoryPreview', { storyId });
   };
 
   return (
