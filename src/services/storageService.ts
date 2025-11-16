@@ -230,6 +230,20 @@ export class StorageService {
   }
 
   /**
+   * Initialize default stories if none exist
+   */
+  async initializeDefaultStories(defaultStories: LegacyStory[]): Promise<void> {
+    try {
+      for (const defaultStory of defaultStories) {
+        await this.saveStory(defaultStory);
+      }
+    } catch (error) {
+      console.error('Error initializing default stories:', error);
+      throw error;
+    }
+  }
+
+  /**
    * Clear all data (use with caution)
    */
   async clearAll(): Promise<void> {

@@ -224,7 +224,7 @@ const InterviewScreen: React.FC<Props> = ({ navigation, route }) => {
   }
 
   const progress = ((currentQuestionIndex + 1) / questions.length) * 100;
-  const isComplete = currentQuestionIndex >= questions.length - 1 && responses.length > 0;
+  const isComplete = responses.length >= questions.length;
 
   return (
     <SafeAreaView style={styles.container}>
